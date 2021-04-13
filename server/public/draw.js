@@ -8,12 +8,25 @@ fetch('http://localhost:3000/api/lines')
   .then(response => response.json())
   .then(json => lines = json)
 
+let screenW = window.innerWidth
+let screenH = window.innerHeight
+
+
 function setup() {
-    createCanvas(400, 400);
+    let canvasHeight = screenH * 0.8
+    let canvasWidth = screenW * 0.8
+
+    if(window.innerWidth > window.innerHeight){
+        canvasWidth = canvasHeight
+    } else {
+        canvasHeight = canvasWidth
+    }
+    let renderer = createCanvas(canvasWidth, canvasHeight)
+    renderer.parent(document.getElementById("canvasContainer"))
 }
 
 function draw() {
-    background(220);
+    background(255);
 
     for(let i = 0; i < lines.length; i++){
         line(lines[i].oldX, lines[i].oldY, lines[i].x, lines[i].y)

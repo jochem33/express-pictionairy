@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+
+.siteTitle {
+    font-family: 'Arial Rounded MT Bold', 'Nunito', "Helvetica Rounded", Arial, sans-serif;
+    color: white;
+    margin: 0;
+    margin-left: 5vw;
+
+    padding: 1vh;
+}
+
+#content {
+    background-color: #FF5A5A;
+    width: 100vw;
+    height: 100vh;
+}
+
+body {
+    overflow: hidden;
+}
+
+#canvasContainer {
+    margin-left: 5vw;
+}
