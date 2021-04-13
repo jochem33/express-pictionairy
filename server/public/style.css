@@ -9,6 +9,14 @@
     padding: 1vh;
 }
 
+.siteTitleCentered {
+    display: block;
+    text-align: center;
+    width: 100vw;
+    padding-top: 5vh;
+    margin-left: 0;
+}
+
 #content {
     background-color: #FF5A5A;
     width: 100vw;
@@ -21,4 +29,31 @@ body {
 
 #canvasContainer {
     margin-left: 5vw;
+}
+
+
+.box {
+    font-family: 'Arial Rounded MT Bold', 'Nunito', "Helvetica Rounded", Arial, sans-serif;
+    background-color: #FDA7A7;
+    border: 0 solid transparent;
+    border-radius: 1vw;
+    padding: 1vw;
+    color: white;
+}
+
+.buttonBox {
+    text-align: center;
+    width: 20vw;
+    height: 10vh;
+    font-size: xx-large;
+    margin: 2vh;
+}
+
+.buttonContainer {
+    margin-top: 4vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }

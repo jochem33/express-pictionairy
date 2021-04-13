@@ -23,6 +23,11 @@ app.get('/api/lines', (req, res) => {
 
 
 
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/frontend/index.html')
+})
+
+
 app.get('/g/:gameCode', (req, res) => {
     console.log(req.params.gameCode, Object.keys(gameData))
     if(Object.keys(gameData).includes(req.params.gameCode)){
