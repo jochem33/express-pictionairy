@@ -44,9 +44,10 @@ body {
 .buttonBox {
     text-align: center;
     width: 20vw;
-    height: 10vh;
-    font-size: xx-large;
+    height: 7vh;
+    font-size: 6vh;
     margin: 2vh;
+    text-decoration: none;
 }
 
 .buttonContainer {
