@@ -28,6 +28,12 @@ app.get('/', (req, res) => {
 })
 
 
+
+app.post('/api/host', (req, res) => {
+    res.redirect('/g/' + gameCode)
+})
+
+
 app.get('/g/:gameCode', (req, res) => {
     console.log(req.params.gameCode, Object.keys(gameData))
     if(Object.keys(gameData).includes(req.params.gameCode)){
@@ -42,7 +48,10 @@ app.get('/g/:gameCode', (req, res) => {
 io.on('connection', (socket) => {
     console.log('a user connected')
     socket.emit("message", "Connected!")
+    console.log("gamecode = ", socket.handshake.query["gameCode"])
 
+    socket.join(socket.handshake.query["gameCode"])
+    console.log("current room: ", Array.from(socket.rooms)[1])
 
     socket.on('message', (msg) => {
         console.log('message: ' + msg)
@@ -51,7 +60,8 @@ io.on('connection', (socket) => {
     socket.on('addLine', (newLine) => {
         console.log(lines.length)
         lines.push(newLine)
-        io.emit("emitLines", lines)
+        socket.in(Array.from(socket.rooms)[1]).emit("emitLines", lines);
+        // socket.in(socket.rooms[1]).emit("emitLines", lines);
     })
 })
 

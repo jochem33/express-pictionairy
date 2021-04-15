@@ -1,6 +1,6 @@
-const socket = io("ws://localhost:3000")
+// const socket = io("ws://localhost:3000", {code: "defaultGame"})
 
 
-socket.on("connect", () => {
-  socket.emit("message", "Connected!")
-})
+// socket.on("connect", () => {
+//   socket.emit("message", "Connected!")
+// })

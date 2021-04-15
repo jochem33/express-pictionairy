@@ -1,4 +1,11 @@
-console.log("Drawing setup...")
+const socket = io("ws://localhost:3000", {query: "gameCode=defaultGame"})
+
+
+socket.on("connect", () => {
+  socket.emit("message", "Connected!")
+})
+
+
 
 let oldMouseX = 0;
 let oldMouseY = 0;
