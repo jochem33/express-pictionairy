@@ -33,22 +33,34 @@ body {
 
 
 .box {
+    display: block;
     font-family: 'Arial Rounded MT Bold', 'Nunito', "Helvetica Rounded", Arial, sans-serif;
     background-color: #FDA7A7;
     border: 0 solid transparent;
     border-radius: 1vw;
     padding: 1vw;
     color: white;
+    text-align: center;
+    width: 25vw;
+    /* height: 7vh; */
+    font-size: 6vh;
+    margin-top: 2vh;
+    text-decoration: none;
 }
 
-.buttonBox {
+
+input:focus{
+    outline: none;
+}
+
+/* .buttonBox {
     text-align: center;
     width: 20vw;
     height: 7vh;
     font-size: 6vh;
     margin: 2vh;
     text-decoration: none;
-}
+} */
 
 .buttonContainer {
     margin-top: 4vh;
@@ -57,4 +69,26 @@ body {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+}
+
+
+
+.formlabel {
+    font-family: 'Arial Rounded MT Bold', 'Nunito', "Helvetica Rounded", Arial, sans-serif;
+    font-size: 6vh;
+    color: white;
+    display: inline;
+}
+
+.checkBox {
+    display: inline;
+    background-color: #FDA7A7;
+    border: 0 solid transparent;
+    border-radius: 1vw;
+    padding: 1vw;
+    text-align: center;
+    width: 5vw;
+    height: 5vh;
+    margin-top: 2vh;
+    text-decoration: none;
 }
