@@ -50,14 +50,14 @@ let screenH = window.innerHeight
 
 
 function setup() {
-    let canvasHeight = screenH * 0.8
-    let canvasWidth = screenW * 0.8
+    let canvasHeight = screenH * 0.7
+    let canvasWidth = screenH
 
-    if(window.innerWidth > window.innerHeight){
-        canvasWidth = canvasHeight
-    } else {
-        canvasHeight = canvasWidth
-    }
+    // if(window.innerWidth > window.innerHeight){
+    //     canvasWidth = canvasHeight
+    // } else {
+    //     canvasHeight = canvasWidth
+    // }
     let renderer = createCanvas(canvasWidth, canvasHeight)
     renderer.parent(document.getElementById("canvasContainer"))
 }
