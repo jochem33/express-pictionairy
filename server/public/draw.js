@@ -1,5 +1,7 @@
-const socket = io("ws://localhost:3000", {query: "gameCode=defaultGame"})
+const gamecode = window.location.href.split("/")[window.location.href.split("/").length - 1]
 
+
+const socket = io("ws://localhost:3000", {query: "gameCode=" + gamecode})
 
 socket.on("connect", () => {
   socket.emit("message", "Connected!")
@@ -11,9 +13,16 @@ let oldMouseX = 0;
 let oldMouseY = 0;
 
 let lines = []
-fetch('http://localhost:3000/api/lines')
+fetch('http://localhost:3000/api/lines/' + gamecode)
   .then(response => response.json())
   .then(json => lines = json)
+
+let players = {}
+fetch('http://localhost:3000/api/players/' + gamecode)
+  .then(response => response.json())
+  .then(json => players = json)
+  .then(pl => console.log(pl))
+
 
 let screenW = window.innerWidth
 let screenH = window.innerHeight

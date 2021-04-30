@@ -2,25 +2,25 @@ const express = require('express')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
+const bodyParser = require("body-parser");
+const e = require('express');
+
 
 app.use(express.static('public'))
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 let gameData = {
     "defaultGame": {
         lines: [],
         players: {}
+    },
+    "game2": {
+        lines: [],
+        players: {}
     }
 }
-
-let lines = []
-
-
-
-app.get('/api/lines', (req, res) => {
-    res.send(lines)
-})
-
 
 
 app.get('/', (req, res) => {
@@ -29,9 +29,52 @@ app.get('/', (req, res) => {
 
 
 
-app.post('/api/host', (req, res) => {
-    res.redirect('/g/' + gameCode)
+app.get('/join', (req, res) => {
+    res.sendFile(__dirname + '/frontend/join.html')
 })
+
+app.post('/api/join/', (req, res) => {
+    const nickname = req.body.nickname
+    const gamecode = req.body.gamecode
+    if(Object.keys(gameData).includes(gamecode)){
+        if(!Object.keys(gameData[gamecode].players).includes(nickname)) {
+            res.redirect('/g/' + req.body.gamecode)
+        } else {
+            res.send('Name already taken')
+        }
+    } else {
+        res.status(404).send('404: Page not Found')
+    }
+})
+
+
+
+app.get('/host', (req, res) => {
+    res.sendFile(__dirname + '/frontend/host.html')
+})
+
+app.post('/api/host', (req, res) => {
+    console.log(req.body.nickname, req.body.gamecode, req.body.private)
+    gameData[req.body.gamecode] = {
+        lines: [],
+        players: {}
+    }
+    gameData[req.body.gamecode].players[req.body.nickname] = 0;
+    res.redirect('/g/' + req.body.gamecode)
+})
+
+
+
+app.get('/api/lines/:gamecode', (req, res) => {
+    res.send(gameData[req.params.gamecode].lines)
+})
+
+
+app.get('/api/players/:gamecode', (req, res) => {
+    res.send(gameData[req.params.gamecode].players)
+})
+
+
 
 
 app.get('/g/:gameCode', (req, res) => {
@@ -58,10 +101,10 @@ io.on('connection', (socket) => {
     })
 
     socket.on('addLine', (newLine) => {
-        console.log(lines.length)
-        lines.push(newLine)
-        socket.in(Array.from(socket.rooms)[1]).emit("emitLines", lines);
-        // socket.in(socket.rooms[1]).emit("emitLines", lines);
+        let gameCode = Array.from(socket.rooms)[1]
+        console.log(gameCode, gameData[gameCode].lines.length)
+        gameData[gameCode].lines.push(newLine)
+        socket.in(gameCode).emit("emitLines", gameData[gameCode].lines);
     })
 })
 
