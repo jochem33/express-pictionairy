@@ -7,6 +7,7 @@
     margin-left: 5vw;
 
     padding: 1vh;
+    grid-area: title;
 }
 
 .siteTitleCentered {
@@ -21,6 +22,12 @@
     background-color: #FF5A5A;
     width: 100vw;
     height: 100vh;
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+    grid-template-areas: 
+        'title title'
+        'canvas players'
+        'woorden players';
 }
 
 body {
@@ -28,6 +35,9 @@ body {
 }
 
 #canvasContainer {
+    grid-area: canvas;
+    width: 80vh;
+    margin: 0; 
     margin-left: 5vw;
 }
 
@@ -91,4 +101,18 @@ input:focus{
     height: 5vh;
     margin-top: 2vh;
     text-decoration: none;
+}
+
+
+
+
+#playerlist {
+    grid-area: players;
+    width: 20vw;
+    height: 80vh;
+}
+
+.player {
+    font-size: small;
+    width: 16vw;
 }

@@ -19,9 +19,26 @@ fetch('http://localhost:3000/api/lines/' + gamecode)
 
 let players = {}
 fetch('http://localhost:3000/api/players/' + gamecode)
-  .then(response => response.json())
-  .then(json => players = json)
-  .then(pl => console.log(pl))
+    .then(response => response.json())
+    .then(json => {
+        let players = json
+        let playerNames = Object.keys(players)
+        console.log(players)
+        let playerlist = document.getElementById("playerlist")
+        for(let i = 0; i < playerNames.length; i++){
+            let player = playerlist.insertRow(i)
+            let name = player.insertCell(0)
+            let score = player.insertCell(1)
+            name.innerHTML = playerNames[i]
+            score.innerHTML = players[playerNames[i]]
+
+            player.classList.add("player")
+            player.classList.add("box")
+
+            name.classList.add("playerName")
+            score.classList.add("playerScore")
+        }
+    })
 
 
 let screenW = window.innerWidth
