@@ -38,6 +38,7 @@ app.post('/api/join/', (req, res) => {
     const gamecode = req.body.gamecode
     if(Object.keys(gameData).includes(gamecode)){
         if(!Object.keys(gameData[gamecode].players).includes(nickname)) {
+            gameData[gamecode].players[nickname] = 0;
             res.redirect('/g/' + req.body.gamecode)
         } else {
             res.send('Name already taken')
@@ -102,9 +103,9 @@ io.on('connection', (socket) => {
 
     socket.on('addLine', (newLine) => {
         let gameCode = Array.from(socket.rooms)[1]
-        console.log(gameCode, gameData[gameCode].lines.length)
-        gameData[gameCode].lines.push(newLine)
-        socket.in(gameCode).emit("emitLines", gameData[gameCode].lines);
+        console.log(gameCode)
+        gameData[gameCode]["lines"].push(newLine)
+        socket.in(gameCode).emit("emitLines", gameData[gameCode]["lines"]);
     })
 })
 
