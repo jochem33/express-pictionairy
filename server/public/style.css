@@ -145,3 +145,7 @@ input:focus{
     height: 5vh;
     font-size: small;
 }
+
+.boxDisabled {
+    background-color: #fe8383;
+}
