@@ -10,9 +10,9 @@
             <h1 class="siteTitle siteTitleCentered">Pictionairy (maar dan anders)</h1>
 
             <div>
-                <form  class="buttonContainer" action="/api/host" method="post">
-                    <input class="box" type="text" maxlength="20" name="nickname" placeholder="nickname">
-                    <input class="box" type="text" maxlength="6" name="gamecode" placeholder="code">
+                <form id="joinForm" class="buttonContainer" action="/api/host" method="post">
+                    <input class="box" type="text" maxlength="20" name="nickname" id="nickname" placeholder="nickname">
+                    <input class="box" type="text" maxlength="6" name="gamecode" id="gamecode" placeholder="code">
                     <div>
                         <label class= "formlabel" for="private">private</label>
                         <input class="checkBox" type="checkbox" name="private">    
@@ -21,5 +21,6 @@
                 </form>
             </div>
         </div>
+        <script src="/join.js"></script>
     </body>
 </html>

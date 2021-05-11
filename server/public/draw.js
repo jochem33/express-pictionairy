@@ -1,5 +1,6 @@
-const gamecode = window.location.href.split("/")[window.location.href.split("/").length - 1]
-
+// const gamecode = window.location.href.split("/")[window.location.href.split("/").length - 1]
+const gamecode = localStorage.getItem("gamecode");
+const nickname = localStorage.getItem("nickname");
 
 const socket = io("ws://localhost:3000", {query: "gameCode=" + gamecode})
 
@@ -25,12 +26,15 @@ function fetchPlayers(){
             let playerNames = Object.keys(players)
             console.log(players)
             let playerlist = document.getElementById("playerlist")
+            while (playerlist.firstChild) {
+                playerlist.removeChild(playerlist.firstChild);
+            }
             for(let i = 0; i < playerNames.length; i++){
                 let player = playerlist.insertRow(i)
                 let name = player.insertCell(0)
                 let score = player.insertCell(1)
                 name.innerHTML = playerNames[i]
-                score.innerHTML = players[playerNames[i]]
+                score.innerHTML = players[playerNames[i]].score
 
                 player.classList.add("player")
                 player.classList.add("box")
@@ -93,5 +97,10 @@ function mouseDragged() {
 
 socket.on("emitLines", (newLines) => {
     lines = newLines
-    console.log("updates lines")
+    console.log("updated lines")
+})
+
+socket.on("playerUpdate", () => {
+    fetchPlayers()
+    console.log("updated players")
 })

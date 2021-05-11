@@ -10,12 +10,13 @@
             <h1 class="siteTitle siteTitleCentered">Pictionairy (maar dan anders)</h1>
 
             <div>
-                <form  class="buttonContainer" action="/api/join" method="post">
-                    <input class="box" type="text" maxlength="20" name="nickname" placeholder="nickname">
-                    <input class="box" type="text" maxlength="6" name="gamecode" placeholder="code">
+                <form id="joinForm" class="buttonContainer" action="/api/join" method="post">
+                    <input class="box" type="text" maxlength="20" name="nickname" id="nickname" placeholder="nickname">
+                    <input class="box" type="text" maxlength="6" name="gamecode" id="gamecode" placeholder="code">
                     <input class="box" type="submit" value="join">
                 </form>
             </div>
         </div>
+        <script src="/join.js"></script>
     </body>
 </html>
