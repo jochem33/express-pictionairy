@@ -2,21 +2,17 @@ const express = require('express')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
-const bodyParser = require("body-parser");
-const e = require('express');
+const bodyParser = require("body-parser")
+const e = require('express')
 
 
 app.use(express.static('public'))
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 let gameData = {
     "defaultGame": {
-        lines: [],
-        players: {}
-    },
-    "game2": {
         lines: [],
         players: {}
     }
@@ -38,13 +34,23 @@ app.post('/api/join/', (req, res) => {
     const gamecode = req.body.gamecode
     if(Object.keys(gameData).includes(gamecode)){
         if(!Object.keys(gameData[gamecode].players).includes(nickname)) {
-            gameData[gamecode].players[nickname] = 0;
-            res.redirect('/g/' + req.body.gamecode)
+            console.log(Object.keys(gameData[gamecode].players).length)
+            if(Object.keys(gameData[gamecode].players).length < 4){
+                gameData[gamecode].players[nickname] = {
+                    role: "0",
+                    score: 0
+                }
+
+                io.in(gamecode).emit("playerUpdate", "")
+                res.redirect('/g/' + req.body.gamecode)
+            } else {
+                res.send('Room full')
+            }
         } else {
             res.send('Name already taken')
         }
     } else {
-        res.status(404).send('404: Page not Found')
+        res.status(404).send('404: Game not Found')
     }
 })
 
@@ -58,9 +64,13 @@ app.post('/api/host', (req, res) => {
     console.log(req.body.nickname, req.body.gamecode, req.body.private)
     gameData[req.body.gamecode] = {
         lines: [],
-        players: {}
+        players: {},
+        gamestate: "WAIT"
     }
-    gameData[req.body.gamecode].players[req.body.nickname] = 0;
+    gameData[req.body.gamecode].players[req.body.nickname] = {
+        role: "0",
+        score: 0
+    }
     res.redirect('/g/' + req.body.gamecode)
 })
 
@@ -103,9 +113,11 @@ io.on('connection', (socket) => {
 
     socket.on('addLine', (newLine) => {
         let gameCode = Array.from(socket.rooms)[1]
-        console.log(gameCode)
-        gameData[gameCode]["lines"].push(newLine)
-        socket.in(gameCode).emit("emitLines", gameData[gameCode]["lines"]);
+        if(gameCode.length == 6){
+            console.log(gameCode)
+            gameData[gameCode]["lines"].push(newLine)
+            socket.in(gameCode).emit("emitLines", gameData[gameCode]["lines"])
+        }
     })
 })
 
