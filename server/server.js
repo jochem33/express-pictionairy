@@ -3,7 +3,6 @@ const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const bodyParser = require("body-parser")
-const e = require('express')
 
 
 app.use(express.static('public'))
@@ -68,7 +67,7 @@ app.post('/api/host', (req, res) => {
         gamestate: "WAIT"
     }
     gameData[req.body.gamecode].players[req.body.nickname] = {
-        role: "0",
+        role: "Drawer",
         score: 0
     }
     res.redirect('/g/' + req.body.gamecode)
@@ -107,13 +106,15 @@ io.on('connection', (socket) => {
     socket.join(socket.handshake.query["gameCode"])
     console.log("current room: ", Array.from(socket.rooms)[1])
 
+    stateUpdate(socket)
+
     socket.on('message', (msg) => {
         console.log('message: ' + msg)
     })
 
     socket.on('addLine', (newLine) => {
         let gameCode = Array.from(socket.rooms)[1]
-        if(gameCode.length == 6){
+        if(gameCode.length > 0){
             console.log(gameCode)
             gameData[gameCode]["lines"].push(newLine)
             socket.in(gameCode).emit("emitLines", gameData[gameCode]["lines"])
@@ -122,7 +123,12 @@ io.on('connection', (socket) => {
 })
 
 
-
+function stateUpdate(socket) {
+    let gameCode = Array.from(socket.rooms)[1]
+    if(Object.keys(gameData).includes(gameCode)){
+        io.in(gameCode).emit("stateUpdate", gameData[gameCode].gamestate)
+    }
+}
 
 http.listen(3000, () => {
     console.log('listening on *:3000')

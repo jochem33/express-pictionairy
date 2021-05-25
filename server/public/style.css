@@ -119,9 +119,21 @@ input:focus{
 }
 
 
+#roleText {
+    display: block;
+    font-family: 'Arial Rounded MT Bold', 'Nunito', "Helvetica Rounded", Arial, sans-serif;
+    border: 0 solid transparent;
+    border-radius: 1vw;
+    padding: 1vw;
+    color: white;
+    width: 16vw;
+    /* height: 7vh; */
+    font-size: small;
+    margin-bottom: 2vh;
+    text-decoration: none;
+}
 
-
-#playerlist {
+#rightBar {
     grid-area: players;
     width: 20vw;
     height: 70vh;
@@ -146,6 +158,6 @@ input:focus{
     font-size: small;
 }
 
-.boxDisabled {
+.box:disabled {
     background-color: #fe8383;
 }
