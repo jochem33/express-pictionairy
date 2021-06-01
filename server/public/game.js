@@ -12,8 +12,6 @@ const where = document.getElementById("where")
 let oldMouseX = 0
 let oldMouseY = 0
 
-let players = {}
-
 let lines = []
 
 
@@ -32,13 +30,13 @@ function fetchLines(){
 }
 
 
-function fetchPlayers(){
-    fetch('http://localhost:3000/api/players/' + gamecode)
+function fetchPlayers() {
+    return new Promise(function(resolve, reject){
+        fetch('http://localhost:3000/api/players/' + gamecode)
         .then(response => response.json())
         .then(json => {
-            players = json
+            let players = json
             let playerNames = Object.keys(players)
-            console.log(players)
             let playerlist = document.getElementById("playerlist")
             while (playerlist.firstChild) {
                 playerlist.removeChild(playerlist.firstChild);
@@ -57,10 +55,10 @@ function fetchPlayers(){
                 score.classList.add("playerScore")
             }
 
-            return players
+            resolve(players)
         })
-    }
-
+    })
+}
 
 
 
@@ -77,13 +75,14 @@ socket.on("playerUpdate", () => {
 })
 
 socket.on("stateUpdate", (gamestate) => {
-    fetchPlayers()
-    let role = players[nickname].role
-    roleText.innerHTML = role
+    fetchPlayers().then((players) => {
+        let role = players[nickname].role
+        roleText.innerHTML = role
 
-    updateInputState(role)
+        updateInputState(role)
 
-    console.log("updated gamestate", gamestate)
+        console.log("updated gamestate", gamestate)
+    })  
 })
 
 

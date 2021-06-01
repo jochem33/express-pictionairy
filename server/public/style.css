@@ -41,7 +41,7 @@
     grid-template-areas: 
         'title title'
         'canvas players'
-        'woorden players';
+        'words players';
     padding: 0 5vw 0 5vw;
 }
 
@@ -129,7 +129,7 @@ input:focus{
     width: 16vw;
     /* height: 7vh; */
     font-size: small;
-    margin-bottom: 2vh;
+    margin: 0;
     text-decoration: none;
 }
 
@@ -146,13 +146,13 @@ input:focus{
 }
 
 
-.woorden {
-    grid-area: woorden;
+.words {
+    grid-area: words;
     display: flex;
     justify-content: space-between;
 }
 
-.woordenBox {
+.wordsBox {
     width: 28vh;
     height: 5vh;
     font-size: small;

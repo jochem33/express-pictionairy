@@ -7,18 +7,12 @@ let screenH = window.innerHeight
 function setup() {
     let canvasHeight = screenH * 0.7
     let canvasWidth = screenH
-
-    // if(window.innerWidth > window.innerHeight){
-    //     canvasWidth = canvasHeight
-    // } else {
-    //     canvasHeight = canvasWidth
-    // }
     let renderer = createCanvas(canvasWidth, canvasHeight)
     renderer.parent(document.getElementById("canvasContainer"))
 }
 
 function draw() {
-    background(255);
+    background(255)
 
     for(let i = 0; i < lines.length; i++){
         line(lines[i].oldX, lines[i].oldY, lines[i].x, lines[i].y)
@@ -40,7 +34,7 @@ function mouseDragged() {
     }
     lines.push(newLine)
 
-    socket.emit("addLine", newLine);
+    socket.emit("addLine", newLine)
 
     oldMouseX = mouseX
     oldMouseY = mouseY
