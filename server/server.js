@@ -34,9 +34,18 @@ app.post('/api/join/', (req, res) => {
     if(Object.keys(gameData).includes(gamecode)){
         if(!Object.keys(gameData[gamecode].players).includes(nickname)) {
             console.log(Object.keys(gameData[gamecode].players).length)
-            if(Object.keys(gameData[gamecode].players).length < 4){
+            let playercount = Object.keys(gameData[gamecode].players).length
+            if(playercount < 4){
+                let role = "0"
+                if(playercount == 2){
+                    role = "Wie"
+                } else if(playercount == 3){
+                    role = "Wat"
+                } else {
+                    role = "Waar"
+                }
                 gameData[gamecode].players[nickname] = {
-                    role: "0",
+                    role: role,
                     score: 0
                 }
 
@@ -67,7 +76,7 @@ app.post('/api/host', (req, res) => {
         gamestate: "WAIT"
     }
     gameData[req.body.gamecode].players[req.body.nickname] = {
-        role: "Drawer",
+        role: "Tekenaar",
         score: 0
     }
     res.redirect('/g/' + req.body.gamecode)

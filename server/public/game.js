@@ -1,6 +1,6 @@
 // const gamecode = window.location.href.split("/")[window.location.href.split("/").length - 1]
-const gamecode = localStorage.getItem("gamecode");
-const nickname = localStorage.getItem("nickname");
+const gamecode = localStorage.getItem("gamecode")
+const nickname = localStorage.getItem("nickname")
 
 const roleText = document.getElementById("roleText")
 
@@ -9,8 +9,8 @@ const what = document.getElementById("what")
 const where = document.getElementById("where")
 
 
-let oldMouseX = 0;
-let oldMouseY = 0;
+let oldMouseX = 0
+let oldMouseY = 0
 
 let players = {}
 
@@ -89,22 +89,22 @@ socket.on("stateUpdate", (gamestate) => {
 
 function updateInputState(role){
     switch(role) {
-        case "Drawer":
+        case "Tekenaar":
                 who.disabled = true
                 what.disabled = true
                 where.disabled = true
             break
-        case "Who":
+        case "Wie":
                 who.disabled = false
                 what.disabled = true
                 where.disabled = true
             break
-        case "What":
+        case "Wat":
                 who.disabled = true
                 what.disabled = false
                 where.disabled = true
             break
-        case "Where":
+        case "Waar":
                 who.disabled = true
                 what.disabled = true
                 where.disabled = false
