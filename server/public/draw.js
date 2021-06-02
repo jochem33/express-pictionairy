@@ -1,9 +1,12 @@
-
+// initialize some vars
+let oldMouseX = 0
+let oldMouseY = 0
 
 let screenW = window.innerWidth
 let screenH = window.innerHeight
 
 
+// create the canvas
 function setup() {
     let canvasHeight = screenH * 0.7
     let canvasWidth = screenH
@@ -11,6 +14,8 @@ function setup() {
     renderer.parent(document.getElementById("canvasContainer"))
 }
 
+
+// function for drawing the lines
 function draw() {
     background(255)
 
@@ -19,12 +24,16 @@ function draw() {
     }
 }
 
+
+// save startpoint of line segment
 function mousePressed() {
     console.log("mouse Pressed")
     oldMouseX = mouseX
     oldMouseY = mouseY
 }
 
+
+// funtion for saving a linesegment and starting a new one
 function mouseDragged() {
     let newLine = {
         oldX: oldMouseX,
