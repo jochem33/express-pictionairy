@@ -15,6 +15,7 @@ function setup() {
 }
 
 
+
 // function for drawing the lines
 function draw() {
     background(255)
@@ -27,25 +28,34 @@ function draw() {
 
 // save startpoint of line segment
 function mousePressed() {
-    console.log("mouse Pressed")
-    oldMouseX = mouseX
-    oldMouseY = mouseY
+    if(drawingEnabled) {
+        console.log("mouse Pressed")
+        oldMouseX = mouseX
+        oldMouseY = mouseY
+    }
 }
 
 
 // funtion for saving a linesegment and starting a new one
 function mouseDragged() {
-    let newLine = {
-        oldX: oldMouseX,
-        oldY: oldMouseY,
-        x: mouseX,
-        y: mouseY
+    if(drawingEnabled) {
+        let newLine = {
+            oldX: oldMouseX,
+            oldY: oldMouseY,
+            x: mouseX,
+            y: mouseY
+        }
+        lines.push(newLine)
+
+        socket.emit("addLine", newLine)
+
+        oldMouseX = mouseX
+        oldMouseY = mouseY
     }
-    lines.push(newLine)
-
-    socket.emit("addLine", newLine)
-
-    oldMouseX = mouseX
-    oldMouseY = mouseY
 }
 
+
+
+function clearCanvas(){
+    lines = []
+}

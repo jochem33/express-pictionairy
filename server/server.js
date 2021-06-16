@@ -5,6 +5,14 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const bodyParser = require("body-parser")
 
+// allow cors?
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD")
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+    next()
+})
+
+
 // static files are stored in 'public' folder
 app.use(express.static('public'))
 
@@ -60,15 +68,20 @@ app.post('/api/join/', (req, res) => {
 
     // if everything is OK, assign a role and make a new dataBase entry for the player
     let role
+    let status
     if(playercount == 2){
         role = "Wie"
+        status = "Thinking who"
     } else if(playercount == 3){
         role = "Wat"
+        status = "Thinking what"
     } else {
         role = "Waar"
+        status = "Thinking where"
     }
     gameData[gamecode].players[nickname] = {
         role: role,
+        status: status,
         score: 0
     }
 
@@ -83,10 +96,17 @@ app.post('/api/host', (req, res) => {
     gameData[req.body.gamecode] = {
         lines: [],
         players: {},
-        gamestate: "WAIT"
+        gamestate: "WAIT",
+        words: {
+            // who: "",
+            // what: "",
+            // where: ""
+        },
+        guessCount: 0
     }
     gameData[req.body.gamecode].players[req.body.nickname] = {
         role: "Tekenaar",
+        status: "Waiting",
         score: 0
     }
     res.redirect('/g/' + req.body.gamecode)
@@ -97,6 +117,11 @@ app.post('/api/host', (req, res) => {
 // route for getting the current drawing when joining a game
 app.get('/api/lines/:gamecode', (req, res) => {
     res.send(gameData[req.params.gamecode].lines)
+})
+
+// route for getting the current words when joining a game
+app.get('/api/words/:gamecode', (req, res) => {
+    res.send(gameData[req.params.gamecode].words)
 })
 
 // route for getting the playerdata when joining a game or after a state update
@@ -117,6 +142,8 @@ app.get('/g/:gameCode', (req, res) => {
 
 
 
+
+
 // function for all socket connections
 io.on('connection', (socket) => {
     // add new connection to game room
@@ -128,10 +155,58 @@ io.on('connection', (socket) => {
 
     // when a new line is received, sent line object to all players
     socket.on('addLine', (newLine) => {
-        let gameCode = Array.from(socket.rooms)[1]
+        const gameCode = Array.from(socket.rooms)[1]
         if(gameCode.length > 0){
             gameData[gameCode]["lines"].push(newLine)
             socket.in(gameCode).emit("emitLines", gameData[gameCode]["lines"])
+        }
+    })
+
+    // when a word is submitted
+    socket.on('wordSubmission', (wordData) => {
+        const gameCode = Array.from(socket.rooms)[1]
+        gameData[gameCode].words[wordData[0]] = wordData[1]
+        const wordCount = Object.keys(gameData[gameCode].words).length
+        if(wordCount == 3){
+            gameData[gameCode].gamestate = "DRAW"
+            stateUpdate(socket)
+        }
+    })
+
+
+
+    // when a word is guessed
+    socket.on('wordGuessed', (guessData) => {
+        const gameCode = Array.from(socket.rooms)[1]
+        gameData[gameCode].players[guessData[0]].status = "Guessed"
+        gameData[gameCode].players[guessData[0]].score += 100
+        gameData[gameCode].guessCount += 1
+
+        if(gameData[gameCode].guessCount == 6){
+            gameData[gameCode].gamestate = "WAIT"
+            gameData[gameCode].guessCount = 0
+            gameData[gameCode].words = {}
+
+            let players = Object.keys(gameData[gameCode].players)
+            for (let i = 0; i < players.length; i++) {
+                switch(gameData[gameCode].players[players[i]].role) {
+                    case "Tekenaar":
+                            gameData[gameCode].players[players[i]].role = "Wie"
+                        break
+                    case "Wie":
+                            gameData[gameCode].players[players[i]].role = "Wat"
+                        break
+                    case "Wat":
+                            gameData[gameCode].players[players[i]].role = "Waar"
+                        break
+                    case "Waar":
+                            gameData[gameCode].players[players[i]].role = "Tekenaar"
+                        break
+                }
+            }
+            
+
+            stateUpdate(socket)
         }
     })
 })
