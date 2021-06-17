@@ -91,3 +91,38 @@ Returns an objects with the players for the given gamecode in this format:
 ]
 ```
 ```role``` can be ```"Tekenaar"```, ```"Wie"```, ```"Wat"``` or ```"Waar"```. ```status``` is not used yet but will be in future updates.
+
+ 
+ 
+ ### SOCKET.IO endpoints
+ 
+ 
+ #### addLine [POST]
+ Method for adding a new line segment to the drawing. Segments should be provided in this format:
+ 
+```
+{
+   oldX: <x start of segment>,
+   oldY: <y start of segment>,
+   x: <x end of segment>,
+   y: <y end of segment>
+ }
+```
+ 
+ 
+#### wordSubmission [POST]
+Method for submitting a word. Words should be longer than 2 characters, as tested on the client side. Submission shoudl follow this format:
+
+```
+["who", "John Johnson"]
+```
+First element can be ```who```, ```what``` or ```where```.
+ 
+
+ 
+#### wordGuessed [POST]
+Method for telling the server that the client guessed one of the words. Nickname is provided in this format:
+ 
+```
+["<nickname>"]
+```
