@@ -55,14 +55,14 @@ app.post('/api/join/', (req, res) => {
 
     // if nickname is already taken
     if(Object.keys(gameData[gamecode].players).includes(nickname)) {
-        res.send('Name already taken')
+        res.status(400).send('400: Name already taken')
         return
     }
     let playercount = Object.keys(gameData[gamecode].players).length
 
     // if room is full
     if(playercount >= 4){
-        res.send('Room full')
+        res.status(400).send('400: Room full')
         return
     }
 
