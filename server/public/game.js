@@ -1,5 +1,7 @@
-const baseURL = "http://localhost:3000"
-const socketURL = "ws://localhost:3000"
+const ipAdress = "192.168.6.134:3000"
+
+const baseURL = "http://" + ipAdress
+const socketURL = "ws://" + ipAdress
 
 // get data from local storage
 const gamecode = localStorage.getItem("gamecode")
