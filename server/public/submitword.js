@@ -10,10 +10,10 @@ wordInputs.forEach(el => el.addEventListener('keyup', event => {
             if(wordvalue.length > 2) {
                 event.target.disabled = true
                 console.log("submit". wordvalue)
-                socket.emit("wordSubmission", [wordType, wordvalue])
+                socket.emit("wordSubmission", [wordType, wordvalue.toLowerCase()])
             }
         } else if(gamestate == "DRAW") {
-            if(words[event.target.id] == event.target.value){
+            if(words[event.target.id].toLowerCase() == event.target.value.toLowerCase()){
                 event.target.disabled = true
                 socket.emit("wordGuessed", [nickname])
             } else {
